@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNREDACTED: The JFK Files | Chat</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="static/chatstyle.css">
+    <script src="https://unpkg.com/htmx.org@1.9.11"></script>
+   
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1 class="site-title">UNREDACTED: The JFK Files</h1>
+            <p class="site-subtitle">Directly interrogate the declassified truth</p>
+        </div>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="/"><i class="fa-solid fa-home"></i> Home</a></li>
+            <li><a href="/chat"><i class="fa-solid fa-comments"></i> Chat Now</a></li>
+            <li><a href="https://www.archives.gov/research/jfk/release-2025"><i class="fa-solid fa-file-lines"></i> Documents</a></li>
+            <li><a href="https://github.com/divine-architect/chat-with-jfk-files"><i class="fa-brands fa-github"></i> GitHub</a></li>
+        </ul>
+    </nav>
+    
+    <div class="main-content">
+        <div class="container">
+            <div class="welcome-message">
+                <h2 class="welcome-title">JFK Files AI Intelligence Terminal</h2>
+                <p class="welcome-desc">
+                    Query our AI system for insights from thousands of recently declassified JFK assassination documents. Ask about key figures, 
+                    organizations, locations, events, or specific theories.
+                </p>
+                <div class="example-questions">
+                    <div class="example-question" onclick="setQuestion('What was Lee Harvey Oswald doing in the months before the assassination?')">Oswald's activities</div>
+                    <div class="example-question" onclick="setQuestion('Was there evidence of a second shooter?')">Second shooter theories</div>
+                    <div class="example-question" onclick="setQuestion('What was the CIA\'s involvement?')">CIA involvement</div>
+                    <div class="example-question" onclick="setQuestion('What happened during the autopsy?')">Autopsy findings</div>
+                </div>
+            </div>
+            
+            <div class="chat-container">
+                <div class="chat-header">
+                    <div class="chat-title">
+                        <i class="fas fa-satellite-dish"></i> 
+                        JFK Files AI
+                    </div>
+                    <div class="chat-subtitle">
+                        Analyzing declassified documents...
+                    </div>
+                </div>
+                
+                <div id="messages-container" class="messages-container">
+                   
+                    <div class="message ai">
+                        <div class="message-header">
+                            <span>JFK Files AI</span>
+                            <span id="current-time"></span>
+                        </div>
+                        <div class="message-content">
+                            I am ready to analyze declassified JFK assassination documents. What information are you seeking today?
+                        </div>
+                    </div>
+                </div>
+                
+                <form id="chat-form" class="chat-form" hx-post="/api/chat" hx-trigger="submit" hx-target="#messages-container" hx-swap="beforeend">
+                    <input type="text" name="message" id="chat-input" class="chat-input" placeholder="Type your query here..." required autocomplete="off">
+                    <button type="submit" class="chat-submit">
+                        <i class="fas fa-paper-plane"></i> Send
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>© 2025 UNREDACTED: The JFK Files. Power to the people.</p>
+            
+            <div class="social-links">
+                <a href="https://x.com/cybereriauser" class="social-link"><i class="fa-brands fa-x-twitter"></i> Follow me on X</a>
+                
+                <a href="https://github.com/divine-architect/chat-with-jfk-files" class="social-link"><i class="fa-brands fa-github"></i> Contribute on GitHub</a>
+            </div>
+            <div class="disclaimer">
+                <p>This site uses AI to make declassified documents accessible. All information is sourced directly from officially released government records. I am not affiliated with any government agency. The truth belongs to everyone.
+                    
+                </p>
+           
+           
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
+            document.getElementById('current-time').textContent = timeString;
+            
+        
+            const messagesContainer = document.getElementById('messages-container');
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        });
+        
+       
+        function setQuestion(question) {
+            const input = document.getElementById('chat-input');
+            input.value = question;
+            input.focus();
+        }
+        
+      
+        document.body.addEventListener('htmx:afterSwap', function(event) {
+            if (event.detail.target.id === 'messages-container') {
+                const messagesContainer = document.getElementById('messages-container');
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+        });
+        
+        
+        document.body.addEventListener('htmx:beforeSend', function(event) {
+            if (event.detail.requestConfig.path === '/api/chat') {
+                
+                const messagesContainer = document.getElementById('messages-container');
+                const typingIndicator = document.createElement('div');
+                typingIndicator.id = 'typing-indicator';
+                typingIndicator.className = 'typing-indicator visible';
+                typingIndicator.innerHTML = '<span></span><span></span><span></span>';
+                messagesContainer.appendChild(typingIndicator);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                
+               
+                document.getElementById('chat-input').value = '';
+            }
+        });
+        
+        document.body.addEventListener('htmx:afterOnLoad', function(event) {
+            if (event.detail.requestConfig.path === '/api/chat') {
+               
+                const typingIndicator = document.getElementById('typing-indicator');
+                if (typingIndicator) {
+                    typingIndicator.remove();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
