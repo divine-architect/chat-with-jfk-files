@@ -6,7 +6,7 @@ The website provides an interface for anyone to chat with the JFK investigation 
 It contains over 2300+ files. I've managed to convert all the .pdf to .txt via OCR (will be releasing soon)
 
 Built using chromaDB, python and htmx.
-Support the project!
+Support the project!<br>
 BTC: bc1qta2vkrwp42dlrfv5qfzf34tr59k902vd7xvkl7
 
 ## License
