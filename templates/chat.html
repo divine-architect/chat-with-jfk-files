@@ -124,7 +124,7 @@
         
         
         document.body.addEventListener('htmx:beforeSend', function(event) {
-            if (event.detail.requestConfig.path === '/api/chat') {
+            if (event.detail.requestConfig.path === '/chat') {
                 
                 const messagesContainer = document.getElementById('messages-container');
                 const typingIndicator = document.createElement('div');
@@ -140,7 +140,7 @@
         });
         
         document.body.addEventListener('htmx:afterOnLoad', function(event) {
-            if (event.detail.requestConfig.path === '/api/chat') {
+            if (event.detail.requestConfig.path === '/chat') {
                
                 const typingIndicator = document.getElementById('typing-indicator');
                 if (typingIndicator) {
